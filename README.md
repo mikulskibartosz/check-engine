@@ -1,5 +1,7 @@
 # correct-horse
 
+![Tests](https://github.com/mikulskibartosz/correct-horse/workflows/Run%20Tests/badge.svg)
+
 ## Summary
 
 The goal of this project is to implement a data validation library for PySpark. The library should detect the incorrect structure of the data, unexpected values in columns, and anomalies in the data.
