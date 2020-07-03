@@ -1,6 +1,6 @@
 # correct-horse
 
-![Tests](https://github.com/mikulskibartosz/correct-horse/workflows/Run%20Tests/badge.svg)
+![Tests](https://github.com/mikulskibartosz/correct-horse/workflows/Tests/badge.svg)
 
 ## Summary
 
