@@ -15,5 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run tests in Docker
-      run: docker build -t correct-horse-test . && docker run correct-horse-test
+      run: docker build -t correct-horse-test correct-horse-lib/. && docker run correct-horse-test
       
