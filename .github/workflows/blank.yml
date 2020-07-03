@@ -27,4 +27,4 @@ jobs:
         python_version: 3.8.0
         poetry_version: 1.0
         working_directory: ./correct-horse-lib
-        args: poetry run pytest
+        args: run python -m pytest --cov=correct-horse --cov-branch --cov-fail-under=80 tests/
