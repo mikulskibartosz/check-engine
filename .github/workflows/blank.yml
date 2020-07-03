@@ -1,0 +1,30 @@
+name: Run Tests
+on: 
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install
+      uses: abatilo/actions-poetry@v1.5.0
+      with:
+        python_version: 3.8.0
+        poetry_version: 1.0
+        working_directory: ./correct-horse-lib # Optional, defaults to '.'
+        args: install
+    - name: Run pytest
+      uses: abatilo/actions-poetry@v1.5.0
+      with:
+        python_version: 3.8.0
+        poetry_version: 1.0
+        working_directory: ./correct-horse-lib
+        args: poetry run pytest
