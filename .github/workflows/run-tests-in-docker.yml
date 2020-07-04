@@ -24,3 +24,4 @@ jobs:
         password: ${{ secrets.test_pypi_token }}
         repository_url: https://test.pypi.org/legacy/
         packages_dir: ./pyspark-check-lib/dist
+        skip_existing: true
