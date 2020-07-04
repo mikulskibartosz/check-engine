@@ -56,6 +56,7 @@ COPY pyspark_check ./pyspark_check
 COPY ./tests ./tests
 COPY ./pyproject.toml poetry.lock ./
 COPY ./conftest.py ./
+COPY ./README.md ./
 
 RUN poetry install
 
