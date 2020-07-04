@@ -2,7 +2,6 @@
 Tests that verify whether the PySpark instance used for testing is configured properly.
 """
 import pytest
-import logging
 
 import pandas as pd
 from pyspark.sql import DataFrame
@@ -12,8 +11,6 @@ from pyspark.sql.types import *
 from tests.spark.assert_df import AssertDf
 
 pytestmark = pytest.mark.usefixtures("spark_session")
-
-logger = logging.getLogger('test-spark-env')
 
 
 def test_empty_dataframe(spark_session):
