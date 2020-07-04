@@ -52,7 +52,7 @@ RUN mkdir -p /opt/spark \
     && tar xf spark-2.4.6-bin-hadoop2.7.tgz
 
 WORKDIR /app
-COPY ./correct_horse ./correct_horse
+COPY pyspark_check ./pyspark_check
 COPY ./tests ./tests
 COPY ./pyproject.toml poetry.lock ./
 COPY ./conftest.py ./
@@ -61,4 +61,4 @@ RUN poetry install
 
 ENV SPARK_HOME=/opt/spark/spark-3.0.0-bin-hadoop2.7
 
-CMD poetry run pytest -s --cov=correct_horse --cov-branch --cov-fail-under=80 tests/
+CMD poetry run pytest -s --cov=pyspark_check --cov-branch --cov-fail-under=80 tests/

@@ -9,7 +9,7 @@ import pytest
 from pyspark.sql.types import *
 
 from tests.spark.assert_df import AssertDf
-from correct_horse.validate_df import ValidateSparkDataFrame, ValidationError
+from pyspark_check.validate_df import ValidateSparkDataFrame, ValidationError
 
 pytestmark = pytest.mark.usefixtures("spark_session")
 

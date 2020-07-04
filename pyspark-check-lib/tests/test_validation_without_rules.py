@@ -7,7 +7,7 @@ import pytest
 from pyspark.sql.types import *
 
 from tests.spark.assert_df import AssertDf
-from correct_horse.validate_df import ValidateSparkDataFrame
+from pyspark_check.validate_df import ValidateSparkDataFrame
 
 pytestmark = pytest.mark.usefixtures("spark_session")
 

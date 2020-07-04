@@ -1,4 +1,4 @@
-# correct-horse
+# pyspark-check
 
 ![Tests](https://github.com/mikulskibartosz/correct-horse/workflows/Tests/badge.svg)
 ![GitHub](https://img.shields.io/github/license/mikulskibartosz/correct-horse)
@@ -14,7 +14,7 @@ THERE IS NO PACKAGE YET!!!
 ## How to use
 
 ```
-from correct_horse.validate_df import ValidateSparkDataFrame
+from pyspark_check.validate_df import ValidateSparkDataFrame
 
 result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
         .is_unique("column_name") \
@@ -33,6 +33,6 @@ results.errors a summary of validation errors (three fields: column_name, constr
 2. Run the following commands:
 
 ```
-cd correct-horse-lib
+cd pyspark_check-lib
 poetry build
 ```

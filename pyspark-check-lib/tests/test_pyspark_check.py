@@ -1,4 +1,4 @@
-from correct_horse import __version__
+from pyspark_check import __version__
 
 
 def test_version():

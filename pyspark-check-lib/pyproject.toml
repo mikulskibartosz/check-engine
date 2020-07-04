@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "correct-horse"
+name = "pyspark-check"
 version = "0.1.0"
-description = ""
+description = "Data-quality checks for PySpark"
 authors = ["Bartosz Mikulski <mail@mikulskibartosz.name>"]
 
 [tool.poetry.dependencies]
