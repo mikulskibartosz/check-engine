@@ -1,9 +1,10 @@
-import random
-import string
-from dataclasses import dataclass
-from typing import NamedTuple, List, Callable, Optional, Tuple
+from typing import NamedTuple, List
 
 from pyspark.sql import DataFrame, SparkSession
+
+from pyspark_check._constraints._Constraint import _Constraint
+from pyspark_check._constraints._NotNull import _NotNull
+from pyspark_check._constraints._Unique import _Unique
 
 
 class ValidationError(NamedTuple):
@@ -16,17 +17,6 @@ class ValidationResult(NamedTuple):
     correct_data: DataFrame
     erroneous_data: DataFrame
     errors: List[ValidationError]
-
-
-@dataclass
-class _Constraint:
-    constraint_name: str
-    column_name: str
-    constraint_column_name: Optional[str]
-    filter_success: Callable[[DataFrame], DataFrame]
-    filter_failure: Callable[[DataFrame], DataFrame]
-    validate_constraint: Callable[[DataFrame, List[str]], Tuple[bool, str]]
-    prepare_constraint_check: Callable[[DataFrame, str], DataFrame]
 
 
 class ValidateSparkDataFrame:
@@ -56,29 +46,7 @@ class ValidateSparkDataFrame:
         :raises ValueError: if an unique constraint for a given column already exists.
         :return: self
         """
-        existing = filter(lambda c: c.constraint_name == 'unique' and c.column_name == column_name, self.constraints)
-        if list(existing):
-            raise ValueError(f"An unique constraint for column {column_name} already exists.")
-
-        def check_uniqueness(data_frame: DataFrame, constraint_column: str) -> DataFrame:
-            count_repetitions: DataFrame = data_frame \
-                .groupby(column_name) \
-                .count() \
-                .withColumnRenamed("count", constraint_column)
-
-            return data_frame.join(count_repetitions, column_name, "left")
-
-        constraint_column_name = self._generate_constraint_column_name("unique", column_name)
-        self.constraints.append(_Constraint(
-            "unique",
-            column_name,
-            constraint_column_name,
-            lambda df: df.filter(f"{constraint_column_name} == 1"),
-            lambda df: df.filter(f"{constraint_column_name} > 1"),
-            lambda df, columns: (column_name in columns, f"There is no '{column_name}' column"),
-            check_uniqueness
-        ))
-
+        self._add_constraint(_Unique(column_name))
         return self
 
     def are_unique(self, column_names: List[str]):
@@ -97,20 +65,7 @@ class ValidateSparkDataFrame:
         :param column_name: the column name
         :return: self
         """
-        existing = filter(lambda c: c.constraint_name == 'not_null' and c.column_name == column_name, self.constraints)
-        if list(existing):
-            raise ValueError(f"An not_null constraint for column {column_name} already exists.")
-
-        self.constraints.append(_Constraint(
-            "not_null",
-            column_name,
-            None,
-            lambda df: df.filter(f"{column_name} IS NOT NULL"),
-            lambda df: df.filter(f"{column_name} IS NULL"),
-            lambda df, columns: (column_name in columns, f"There is no '{column_name}' column"),
-            lambda df, column: df
-        ))
-
+        self._add_constraint(_NotNull(column_name))
         return self
 
     def are_not_null(self, column_names: List[str]):
@@ -135,7 +90,7 @@ class ValidateSparkDataFrame:
 
         if self.constraints:
             for constraint in self.constraints:
-                self.df = constraint.prepare_constraint_check(self.df, constraint.constraint_column_name)
+                self.df = constraint.prepare_df_for_check(self.df)
 
             correct_output = self.df
             errors = []
@@ -145,7 +100,7 @@ class ValidateSparkDataFrame:
                 number_of_failures = constraint.filter_failure(self.df).count()
 
                 if number_of_failures > 0:
-                    errors.append(ValidationError(constraint.column_name, constraint.constraint_name, number_of_failures))
+                    errors.append(ValidationError(constraint.column_name, constraint.constraint_name(), number_of_failures))
 
             correct_output = correct_output.select(self.input_columns)
             incorrect_output = self.df.select(self.input_columns).subtract(correct_output)
@@ -154,18 +109,21 @@ class ValidateSparkDataFrame:
         else:
             return ValidationResult(self.df, self.spark.createDataFrame([], self.df.schema), [])
 
+    def _add_constraint(self, constraint: _Constraint) -> None:
+        existing = filter(lambda c: c.constraint_name() == constraint.constraint_name() and c.column_name == constraint.column_name, self.constraints)
+        if list(existing):
+            raise ValueError(f"An not_null constraint for column {constraint.column_name} already exists.")
+
+        self.constraints.append(constraint)
+
     def _validate_constraints(self) -> None:
         columns = self.df.columns
 
         errors = []
         for constraint in self.constraints:
-            is_correct, error_message = constraint.validate_constraint(self.df, columns)
+            is_correct, error_message = constraint.validate_self(self.df, columns)
             if not is_correct:
                 errors.append(error_message)
 
         if errors:
             raise ValueError(", ".join(errors))
-
-    def _generate_constraint_column_name(self, constraint_type, column_name):
-        random_suffix = ''.join(random.choice(string.ascii_lowercase) for i in range(12))
-        return f"__pyspark_check__{column_name}_{constraint_type}_{random_suffix}"
