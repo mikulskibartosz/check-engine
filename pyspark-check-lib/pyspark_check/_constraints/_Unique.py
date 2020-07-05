@@ -1,4 +1,4 @@
-from pandas import DataFrame
+from pyspark.sql import DataFrame
 
 from pyspark_check._constraints._Constraint import _Constraint
 
