@@ -1,4 +1,4 @@
-# pyspark-check
+# PySpark-Check
 
 ![Tests](https://github.com/mikulskibartosz/correct-horse/workflows/Tests/badge.svg)
 ![GitHub](https://img.shields.io/github/license/mikulskibartosz/correct-horse)
