@@ -22,7 +22,7 @@ class ValidationResult(NamedTuple):
 class _Constraint:
     constraint_name: str
     column_name: str
-    constraint_column_name: str
+    constraint_column_name: Optional[str]
     filter_success: Callable[[DataFrame], DataFrame]
     filter_failure: Callable[[DataFrame], DataFrame]
     validate_constraint: Callable[[DataFrame, List[str]], Tuple[bool, str]]
@@ -36,6 +36,8 @@ class ValidateSparkDataFrame:
     // TODO update the example when there is a new validation rule
     Usage example:
         ValidateSparkDataFrame(spark_session, data_frame) \
+            .is_not_null("column_name") \
+            .are_not_null(["column_name_2", "column_name_3"]) \
             .is_unique("column_name") \
             .are_unique(["column_name_2", "column_name_3"]) \
             .execute()
@@ -89,9 +91,42 @@ class ValidateSparkDataFrame:
             self.is_unique(column_name)
         return self
 
+    def is_not_null(self, column_name: str):
+        """
+        Defines a constraint that does not allow null values in a given column.
+        :param column_name: the column name
+        :return: self
+        """
+        existing = filter(lambda c: c.constraint_name == 'not_null' and c.column_name == column_name, self.constraints)
+        if list(existing):
+            raise ValueError(f"An not_null constraint for column {column_name} already exists.")
+
+        self.constraints.append(_Constraint(
+            "not_null",
+            column_name,
+            None,
+            lambda df: df.filter(f"{column_name} IS NOT NULL"),
+            lambda df: df.filter(f"{column_name} IS NULL"),
+            lambda df, columns: (column_name in columns, f"There is no '{column_name}' column"),
+            lambda df, column: df
+        ))
+
+        return self
+
+    def are_not_null(self, column_names: List[str]):
+        """
+        Defines constraints that don't allow null values in all of the given columns
+        :param column_names: a list of column names
+        :return: self
+        """
+        for column_name in column_names:
+            self.is_not_null(column_name)
+        return self
+
     def execute(self) -> ValidationResult:
         """
         Returns a named tuple containing the data that passed the validation, the data that was rejected (only unique rows), and a list of violated constraints.
+        Note that the order of rows and constraints is not preserved.
 
         :raises ValueError: if a constraint has been defined using a non-existing column.
         :return:

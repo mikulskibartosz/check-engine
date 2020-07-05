@@ -12,6 +12,8 @@ THERE IS NO PACKAGE YET!!!
 from pyspark_check.validate_df import ValidateSparkDataFrame
 
 result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
+        .is_not_null("column_name") \
+        .are_not_null(["column_name_2", "column_name_3"]) \
         .is_unique("column_name") \
         .are_unique(["column_name_2", "column_name_3"]) \
         .execute()
