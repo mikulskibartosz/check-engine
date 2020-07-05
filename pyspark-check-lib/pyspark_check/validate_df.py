@@ -4,7 +4,7 @@ from pyspark.sql import DataFrame, SparkSession
 
 from pyspark_check._constraints._Constraint import _Constraint
 from pyspark_check._constraints._NotNull import _NotNull
-from pyspark_check._constraints._Numbers import _Min
+from pyspark_check._constraints._Numbers import _Min, _Max
 from pyspark_check._constraints._Unique import _Unique
 
 
@@ -30,6 +30,7 @@ class ValidateSparkDataFrame:
             .is_not_null("column_name") \
             .are_not_null(["column_name_2", "column_name_3"]) \
             .is_min("numeric_column", 10) \
+            .is_max("numeric_column", 20) \
             .is_unique("column_name") \
             .are_unique(["column_name_2", "column_name_3"]) \
             .execute()
@@ -88,6 +89,16 @@ class ValidateSparkDataFrame:
         :return: self
         """
         self._add_constraint(_Min(column_name, value))
+        return self
+
+    def is_max(self, column_name: str, value: int):
+        """
+        Defines a constraint that check whether the given column contains values equal or smaller than a given integer.
+        :param column_name: the column name
+        :param value: the maximal value
+        :return: self
+        """
+        self._add_constraint(_Max(column_name, value))
         return self
 
     def execute(self) -> ValidationResult:

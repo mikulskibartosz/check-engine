@@ -15,6 +15,7 @@ result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
         .is_not_null("column_name") \
         .are_not_null(["column_name_2", "column_name_3"]) \
         .is_min("numeric_column", 10) \
+        .is_max("numeric_column", 20) \
         .is_unique("column_name") \
         .are_unique(["column_name_2", "column_name_3"]) \
         .execute()
