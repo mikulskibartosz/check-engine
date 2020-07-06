@@ -113,7 +113,7 @@ def test_max_value_of_other_columns_is_ignored(spark_session):
     assert result.errors == [ValidationError("col1", "max", 1)]
 
 
-def test_uniqueness_should_check_all_given_columns_separately(spark_session):
+def test_max_should_check_all_given_columns_separately(spark_session):
     df_schema = StructType([StructField("col1", IntegerType()), StructField("col2", IntegerType())])
     df = spark_session.createDataFrame([[25, 1], [30, 2], [35, 3]], schema=df_schema)
 

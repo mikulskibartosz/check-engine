@@ -113,7 +113,7 @@ def test_min_value_of_other_columns_is_ignored(spark_session):
     assert result.errors == [ValidationError("col1", "min", 1)]
 
 
-def test_uniqueness_should_check_all_given_columns_separately(spark_session):
+def test_min_should_check_all_given_columns_separately(spark_session):
     df_schema = StructType([StructField("col1", IntegerType()), StructField("col2", IntegerType())])
     df = spark_session.createDataFrame([[5, 1], [10, 2], [15, 3]], schema=df_schema)
 
