@@ -18,6 +18,7 @@ result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
         .is_max("numeric_column", 20) \
         .is_unique("column_name") \
         .are_unique(["column_name_2", "column_name_3"]) \
+        .is_between("numeric_column_2", 10, 15) \
         .execute()
 
 result.correct_data #rows that passed the validation
