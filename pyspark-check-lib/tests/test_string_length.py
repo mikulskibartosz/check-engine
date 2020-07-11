@@ -30,7 +30,7 @@ def test_should_return_df_without_changes_if_empty_df_with_is_text_length_constr
     assert result.errors == []
 
 
-def test_should_return_df_without_changes_if_all_are_sorter_than_upper_bound(spark_session):
+def test_should_return_df_without_changes_if_all_are_shorter_than_upper_bound(spark_session):
     df_schema = StructType([StructField("col1", StringType())])
     df = spark_session.createDataFrame([["abc"], ["def"], ["ghi"]], schema=df_schema)
 
