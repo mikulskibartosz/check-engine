@@ -6,6 +6,7 @@ from pyspark_check._constraints._Constraint import _Constraint
 from pyspark_check._constraints._NotNull import _NotNull
 from pyspark_check._constraints._Numbers import _Min, _Max, _Between
 from pyspark_check._constraints._TextLength import _TextLength
+from pyspark_check._constraints._TextRegex import _TextRegex
 from pyspark_check._constraints._Unique import _Unique
 
 
@@ -122,6 +123,16 @@ class ValidateSparkDataFrame:
         :return: self
         """
         self._add_constraint(_TextLength(column_name, lower_bound, upper_bound))
+        return self
+
+    def text_matches_regex(self, column_name, regex):
+        """
+        Defines a constraint that checks whether the content of a given column matches the given regex.
+        :param column_name: the column name
+        :param regex: the regex
+        :return: self
+        """
+        self._add_constraint(_TextRegex(column_name, regex))
         return self
 
     def execute(self) -> ValidationResult:
