@@ -5,6 +5,7 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark_check._constraints._Constraint import _Constraint
 from pyspark_check._constraints._NotNull import _NotNull
 from pyspark_check._constraints._Numbers import _Min, _Max, _Between
+from pyspark_check._constraints._TextLength import _TextLength
 from pyspark_check._constraints._Unique import _Unique
 
 
@@ -110,6 +111,17 @@ class ValidateSparkDataFrame:
         :return: self
         """
         self._add_constraint(_Between(column_name, lower_bound, upper_bound))
+        return self
+
+    def has_length_between(self, column_name, lower_bound, upper_bound):
+        """
+        Defines a constraint that checks whether the given column contains a text which length is equal to or between the lower and upper bound.
+        :param column_name: the column name
+        :param lower_bound: the lower bound of the text length
+        :param upper_bound: the upper bound of the text length
+        :return: self
+        """
+        self._add_constraint(_TextLength(column_name, lower_bound, upper_bound))
         return self
 
     def execute(self) -> ValidationResult:

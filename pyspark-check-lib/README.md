@@ -19,6 +19,7 @@ result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
         .is_unique("column_name") \
         .are_unique(["column_name_2", "column_name_3"]) \
         .is_between("numeric_column_2", 10, 15) \
+        .has_length_between("text_column", 0, 10) \
         .execute()
 
 result.correct_data #rows that passed the validation
