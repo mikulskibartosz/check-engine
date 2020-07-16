@@ -5,6 +5,7 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark_check._constraints._Constraint import _Constraint
 from pyspark_check._constraints._NotNull import _NotNull
 from pyspark_check._constraints._Numbers import _Min, _Max, _Between
+from pyspark_check._constraints._OneOf import _OneOf
 from pyspark_check._constraints._TextLength import _TextLength
 from pyspark_check._constraints._TextRegex import _TextRegex
 from pyspark_check._constraints._Unique import _Unique
@@ -133,6 +134,16 @@ class ValidateSparkDataFrame:
         :return: self
         """
         self._add_constraint(_TextRegex(column_name, regex))
+        return self
+
+    def one_of(self, column_name, allowed_values: list):
+        """
+        Defines a constraint that checks whether the column value is equal to one of the given values.
+        :param column_name: the column name
+        :param allowed_values: a list of allowed values, the type should match the column type
+        :return: self
+        """
+        self._add_constraint(_OneOf(column_name, allowed_values))
         return self
 
     def execute(self) -> ValidationResult:
