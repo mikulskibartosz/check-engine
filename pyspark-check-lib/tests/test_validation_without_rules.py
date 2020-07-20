@@ -4,44 +4,34 @@ In that case, the implementation should pass all of the given data as correct an
 """
 import pytest
 
-from pyspark.sql.types import *
-
-from tests.spark.assert_df import AssertDf
+from tests.spark import empty_string_df, single_string_column_schema
+from tests.spark.AssertResult import AssertValidationResult
 from pyspark_check.validate_df import ValidateSparkDataFrame
 
 pytestmark = pytest.mark.usefixtures("spark_session")
 
 
 def test_should_pass_empty_df_if_there_are_no_rules(spark_session):
-    df_schema = StructType([StructField("col1", StringType())])
-    df = spark_session.createDataFrame([], schema=df_schema)
+    df = empty_string_df(spark_session)
 
     result = ValidateSparkDataFrame(spark_session, df).execute()
 
-    AssertDf(result.correct_data)\
-        .is_empty()\
-        .has_columns(["col1"])
-
-    AssertDf(result.erroneous_data)\
-        .is_empty()\
-        .has_columns(["col1"])
-
-    assert result.errors == []
+    AssertValidationResult(column_name="col1", constraint_name="") \
+        .check(
+        actual=result,
+        expected_correct=df,
+        expected_erroneous=df
+    )
 
 
 def test_should_pass_df_if_there_are_no_rules(spark_session):
-    df_schema = StructType([StructField("col1", StringType())])
-    df = spark_session.createDataFrame([["abc"], ["def"]], schema=df_schema)
+    df = spark_session.createDataFrame([["abc"], ["def"]], schema=single_string_column_schema)
 
     result = ValidateSparkDataFrame(spark_session, df).execute()
 
-    AssertDf(result.correct_data) \
-        .has_n_rows(2) \
-        .has_columns(["col1"]) \
-        .contains_exactly(df.toPandas())
-
-    AssertDf(result.erroneous_data) \
-        .is_empty() \
-        .has_columns(["col1"])
-
-    assert result.errors == []
+    AssertValidationResult(column_name="col1", constraint_name="") \
+        .check(
+        actual=result,
+        expected_correct=df,
+        expected_erroneous=empty_string_df(spark_session)
+    )
