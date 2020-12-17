@@ -9,6 +9,7 @@ from pyspark_check._constraints._OneOf import _OneOf
 from pyspark_check._constraints._TextLength import _TextLength
 from pyspark_check._constraints._TextRegex import _TextRegex
 from pyspark_check._constraints._Unique import _Unique
+from pyspark_check._constraints._MeanColumn import _MeanColumn
 
 
 class ValidationError(NamedTuple):
@@ -189,6 +190,20 @@ class ValidateSparkDataFrame:
             self
         """
         self._add_constraint(_OneOf(column_name, allowed_values))
+        return self
+
+    def mean_column_value(self, column_name: str, min_mean: float, max_mean: float):
+        """Defines a constraint that checks whether the average of all values in the column is between the given min and max value (inclusive).
+
+        Args:
+            column_name: the column name
+            min_mean: the expected min value
+            max_mean: the expected max value
+
+        Returns:
+             self
+        """
+        self._add_constraint(_MeanColumn(column_name, min_mean, max_mean))
         return self
 
     def execute(self) -> ValidationResult:
