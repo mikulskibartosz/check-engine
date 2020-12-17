@@ -40,3 +40,26 @@ results.errors a summary of validation errors (three fields: column_name, constr
 cd pyspark_check-lib
 poetry build
 ```
+
+## How to test locally
+
+### Run all tests
+
+```
+cd pyspark_check-lib
+poetry run pytest tests/
+```
+
+### Run a single test file
+
+```
+cd pyspark_check-lib
+poetry run pytest tests/test_between_integer.py
+```
+
+### Run a single test method
+
+```
+cd pyspark_check-lib
+poetry run pytest tests/test_between_integer.py -k 'test_should_return_df_without_changes_if_all_are_between'
+```
