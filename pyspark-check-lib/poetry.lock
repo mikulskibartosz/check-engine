@@ -126,7 +126,7 @@ description = "Apache Spark Python API"
 name = "pyspark"
 optional = false
 python-versions = "*"
-version = "3.0.0"
+version = "3.0.1"
 
 [package.dependencies]
 py4j = "0.10.9"
