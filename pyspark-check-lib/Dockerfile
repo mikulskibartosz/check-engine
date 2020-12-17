@@ -60,6 +60,6 @@ COPY ./README.md ./
 
 RUN poetry install
 
-ENV SPARK_HOME=/opt/spark/spark
+ENV SPARK_HOME=/opt/spark/spark-3.0.1-bin-hadoop2.7
 
 CMD poetry run pytest -s --cov=pyspark_check --cov-branch --cov-fail-under=80 tests/
