@@ -12,20 +12,27 @@ from pyspark_check._constraints._Unique import _Unique
 
 
 class ValidationError(NamedTuple):
+    """Describes a single validation error.
+
+    This object contains the name of the violated constraint, the name of the column that contains incorrect data and the number of rows that violate the rule.
+    """
     column_name: str
     constraint_name: str
     number_of_errors: int
 
 
 class ValidationResult(NamedTuple):
+    """Contains both the correct data and the data that has not passed the validation.
+
+    In addition to the erroneous data, it also contains a list of validation errors.
+    """
     correct_data: DataFrame
     erroneous_data: DataFrame
     errors: List[ValidationError]
 
 
 class ValidateSparkDataFrame:
-    """
-    Describes the validation rules of a Spark DataFrame and performs the validation.
+    """Describes the validation rules of a Spark DataFrame and performs the validation.
 
     // TODO update the example when there is a new validation rule
     Usage example:
@@ -40,119 +47,160 @@ class ValidateSparkDataFrame:
     """
 
     def __init__(self, spark: SparkSession, data_frame: DataFrame):
+        """ValidateSparkDataFrame
+
+        Args:
+            spark: a Spark Session
+            data_frame: the DataFrame to be validated
+        """
         self.spark: SparkSession = spark
         self.df: DataFrame = data_frame
         self.input_columns: List[str] = data_frame.columns
         self.constraints: List[_Constraint] = []
 
     def is_unique(self, column_name: str):
-        """
-        Defines a constraint that checks whether the given column contains only unique values.
-        :param column_name: the name of the column
-        :raises ValueError: if an unique constraint for a given column already exists.
-        :return: self
+        """Defines a constraint that checks whether the given column contains only unique values.
+
+        Args:
+            column_name: the name of the column
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: if an unique constraint for a given column already exists.
         """
         self._add_constraint(_Unique(column_name))
         return self
 
     def are_unique(self, column_names: List[str]):
-        """
-        Defines constraints that check whether given columns contain only unique values.
-        :param column_names: a list of column names
-        :return: self
+        """Defines constraints that check whether given columns contain only unique values.
+
+        Args:
+            column_names: a list of column names
+
+        Returns:
+            self
         """
         for column_name in column_names:
             self.is_unique(column_name)
         return self
 
     def is_not_null(self, column_name: str):
-        """
-        Defines a constraint that does not allow null values in a given column.
-        :param column_name: the column name
-        :return: self
+        """Defines a constraint that does not allow null values in a given column.
+
+        Args:
+            column_name: the column name
+
+        Returns:
+            self
         """
         self._add_constraint(_NotNull(column_name))
         return self
 
     def are_not_null(self, column_names: List[str]):
-        """
-        Defines constraints that don't allow null values in all of the given columns
-        :param column_names: a list of column names
-        :return: self
+        """Defines constraints that don't allow null values in all of the given columns
+
+        Args:
+            column_names: a list of column names
+
+        Returns:
+            self
         """
         for column_name in column_names:
             self.is_not_null(column_name)
         return self
 
     def is_min(self, column_name: str, value: int):
-        """
-        Defines a constraint that check whether the given column contains values equal or larger than a given integer.
-        :param column_name: the column name
-        :param value: the minimal value
-        :return: self
+        """Defines a constraint that check whether the given column contains values equal or larger than a given integer.
+
+        Args:
+            column_name: the column name
+            value: the minimal value
+
+        Returns:
+            self
         """
         self._add_constraint(_Min(column_name, value))
         return self
 
     def is_max(self, column_name: str, value: int):
-        """
-        Defines a constraint that check whether the given column contains values equal or smaller than a given integer.
-        :param column_name: the column name
-        :param value: the maximal value
-        :return: self
+        """Defines a constraint that check whether the given column contains values equal or smaller than a given integer.
+
+        Args:
+            column_name: the column name
+            value: the maximal value
+
+        Returns:
+            self
         """
         self._add_constraint(_Max(column_name, value))
         return self
 
     def is_between(self, column_name, lower_bound, upper_bound):
-        """
-        Defines a constraint that checks whether the given column contains a value equal to or between the lower and upper bound.
-        :param column_name: the column name
-        :param lower_bound: the lower bound of the range
-        :param upper_bound: the upper bound of the range
-        :return: self
+        """Defines a constraint that checks whether the given column contains a value equal to or between the lower and upper bound.
+
+        Args:
+            column_name: the column name
+            lower_bound: the lower bound of the range
+            upper_bound: the upper bound of the range
+
+        Returns:
+            self
         """
         self._add_constraint(_Between(column_name, lower_bound, upper_bound))
         return self
 
     def has_length_between(self, column_name, lower_bound, upper_bound):
-        """
-        Defines a constraint that checks whether the given column contains a text which length is equal to or between the lower and upper bound.
-        :param column_name: the column name
-        :param lower_bound: the lower bound of the text length
-        :param upper_bound: the upper bound of the text length
-        :return: self
+        """Defines a constraint that checks whether the given column contains a text which length is equal to or between the lower and upper bound.
+
+        Args:
+            column_name: the column name
+            lower_bound: the lower bound of the text length
+            upper_bound: the upper bound of the text length
+
+        Returns:
+            self
         """
         self._add_constraint(_TextLength(column_name, lower_bound, upper_bound))
         return self
 
     def text_matches_regex(self, column_name, regex):
-        """
-        Defines a constraint that checks whether the content of a given column matches the given regex.
-        :param column_name: the column name
-        :param regex: the regex
-        :return: self
+        """Defines a constraint that checks whether the content of a given column matches the given regex.
+
+        Args:
+            column_name: the column name
+            regex: the regex
+
+        Returns:
+            self
         """
         self._add_constraint(_TextRegex(column_name, regex))
         return self
 
     def one_of(self, column_name, allowed_values: list):
-        """
-        Defines a constraint that checks whether the column value is equal to one of the given values.
-        :param column_name: the column name
-        :param allowed_values: a list of allowed values, the type should match the column type
-        :return: self
+        """Defines a constraint that checks whether the column value is equal to one of the given values.
+
+        Args:
+            column_name: the column name
+            allowed_values: a list of allowed values, the type should match the column type
+
+        Returns:
+            self
         """
         self._add_constraint(_OneOf(column_name, allowed_values))
         return self
 
     def execute(self) -> ValidationResult:
-        """
-        Returns a named tuple containing the data that passed the validation, the data that was rejected (only unique rows), and a list of violated constraints.
+        """Returns a named tuple containing the data that passed the validation, the data that was rejected (only unique rows), and a list of violated constraints.
+
         Note that the order of rows and constraints is not preserved.
 
-        :raises ValueError: if a constraint has been defined using a non-existing column.
-        :return:
+        Returns:
+            an instance of ValidationResult
+
+        Raises:
+            ValueError: if a constraint has been defined using a non-existing column.
         """
         self._validate_constraints()
 
