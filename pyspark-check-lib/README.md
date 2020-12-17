@@ -63,3 +63,9 @@ poetry run pytest tests/test_between_integer.py
 cd pyspark_check-lib
 poetry run pytest tests/test_between_integer.py -k 'test_should_return_df_without_changes_if_all_are_between'
 ```
+
+## How to test in Docker
+
+```
+docker build -t pyspark-check-test pyspark-check-lib/. && docker run pyspark-check-test
+```

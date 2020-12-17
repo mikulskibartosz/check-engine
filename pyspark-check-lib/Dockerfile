@@ -48,8 +48,8 @@ ENV PATH ${PATH}:${JAVA_HOME}/bin
 
 RUN mkdir -p /opt/spark \
     && cd /opt/spark \
-    && curl http://ftp.man.poznan.pl/apache/spark/spark-3.0.0/spark-3.0.0-bin-hadoop2.7.tgz -o spark-2.4.6-bin-hadoop2.7.tgz \
-    && tar xf spark-2.4.6-bin-hadoop2.7.tgz
+    && curl https://apache.mirrors.tworzy.net/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz -o spark.tgz \
+    && tar xf spark.tgz
 
 WORKDIR /app
 COPY pyspark_check ./pyspark_check
