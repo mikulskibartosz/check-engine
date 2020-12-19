@@ -9,7 +9,7 @@ from pyspark_check._constraints._OneOf import _OneOf
 from pyspark_check._constraints._TextLength import _TextLength
 from pyspark_check._constraints._TextRegex import _TextRegex
 from pyspark_check._constraints._Unique import _Unique
-from pyspark_check._constraints._MeanColumn import _MeanColumn
+from pyspark_check._constraints._StatColumn import _MeanColumn, _MedianColumn
 
 
 class ValidationError(NamedTuple):
@@ -204,6 +204,20 @@ class ValidateSparkDataFrame:
              self
         """
         self._add_constraint(_MeanColumn(column_name, min_mean, max_mean))
+        return self
+
+    def median_column_value(self, column_name: str, min_median: float, max_median: float):
+        """Defines a constraint that checks whether the median of all values in the column is between the given min and max value (inclusive).
+
+        Args:
+            column_name: the column name
+            min_median: the expected min value
+            max_median: the expected max value
+
+        Returns:
+             self
+        """
+        self._add_constraint(_MedianColumn(column_name, min_median, max_median))
         return self
 
     def execute(self) -> ValidationResult:

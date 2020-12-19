@@ -21,6 +21,7 @@ result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
         .is_between("numeric_column_2", 10, 15) \
         .has_length_between("text_column", 0, 10) \
         .mean_column_value("numeric_column", 10, 20) \
+        .median_column_value("numeric_column", 5, 15) \
         .text_matches_regex("text_column", "^[a-z]{3,10}$") \
         .one_of("text_column", ["value_a", "value_b"]) \
         .one_of("numeric_column", [123, 456]) \
