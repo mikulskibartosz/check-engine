@@ -1,6 +1,6 @@
 from pyspark.sql import DataFrame
 
-from pyspark_check.validate_df import ValidationResult, ValidationError
+from checkengine.validate_df import ValidationResult, ValidationError
 from tests.spark.assert_df import AssertDf
 
 

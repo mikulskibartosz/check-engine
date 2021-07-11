@@ -10,18 +10,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run tests in Docker
-      run: docker build -t pyspark-check-test pyspark-check-lib/. && docker run pyspark-check-test
+      run: docker build -t check-engine-test check-engine-lib/. && docker run check-engine-test
     - name: Build
       uses: abatilo/actions-poetry@v1.5.0
       with:
         python_version: 3.8.0
         poetry_version: 1.0
-        working_directory: ./pyspark-check-lib
+        working_directory: ./check-engine-lib
         args: build
     - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.test_pypi_token }}
         repository_url: https://test.pypi.org/legacy/
-        packages_dir: ./pyspark-check-lib/dist
+        packages_dir: ./check-engine-lib/dist
         skip_existing: true

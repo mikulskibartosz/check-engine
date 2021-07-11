@@ -8,7 +8,7 @@ from pyspark.sql import DataFrame
 
 def _generate_constraint_column_name(constraint_type, column_name):
     random_suffix = ''.join(random.choice(string.ascii_lowercase) for i in range(12))
-    return f"__pyspark_check__{column_name}_{constraint_type}_{random_suffix}"
+    return f"__checkengine__{column_name}_{constraint_type}_{random_suffix}"
 
 
 class _Constraint(ABC):

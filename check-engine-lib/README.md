@@ -9,7 +9,7 @@ THERE IS NO PACKAGE YET!!!
 ## How to use
 
 ```
-from pyspark_check.validate_df import ValidateSparkDataFrame
+from checkengine.validate_df import ValidateSparkDataFrame
 
 result = ValidateSparkDataFrame(spark_session, spark_data_frame) \
         .is_not_null("column_name") \
@@ -39,7 +39,7 @@ results.errors a summary of validation errors (three fields: column_name, constr
 2. Run the following commands:
 
 ```
-cd pyspark_check-lib
+cd check-engine-lib
 poetry build
 ```
 
@@ -48,26 +48,26 @@ poetry build
 ### Run all tests
 
 ```
-cd pyspark_check-lib
+cd check-engine-lib
 poetry run pytest tests/
 ```
 
 ### Run a single test file
 
 ```
-cd pyspark_check-lib
+cd check-engine-lib
 poetry run pytest tests/test_between_integer.py
 ```
 
 ### Run a single test method
 
 ```
-cd pyspark_check-lib
+cd check-engine-lib
 poetry run pytest tests/test_between_integer.py -k 'test_should_return_df_without_changes_if_all_are_between'
 ```
 
 ## How to test in Docker
 
 ```
-docker build -t pyspark-check-test pyspark-check-lib/. && docker run pyspark-check-test
+docker build -t check-engine-test check-engine-lib/. && docker run check-engine-test
 ```

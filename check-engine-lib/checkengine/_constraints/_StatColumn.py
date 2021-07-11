@@ -6,7 +6,7 @@ from abc import ABC
 from pyspark.sql import DataFrame
 import pyspark.sql.functions as F
 
-from pyspark_check._constraints._Numbers import _Number
+from checkengine._constraints._Numbers import _Number
 
 
 class _StatColumn(_Number, ABC):
