@@ -6,7 +6,7 @@ import pytest
 
 from tests.spark import empty_string_df, single_string_column_schema
 from tests.spark.AssertResult import AssertValidationResult
-from pyspark_check.validate_df import ValidateSparkDataFrame
+from checkengine.validate_df import ValidateSparkDataFrame
 
 pytestmark = pytest.mark.usefixtures("spark_session")
 

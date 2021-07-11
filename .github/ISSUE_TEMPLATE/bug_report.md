@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
  - Python version 
  - Spark version
 -  Python packages installed in the runtime environment
-- PySpark-Check version
+- check-engine version
 
 **Additional context**
 Add any other context about the problem here.

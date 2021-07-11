@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 from pyspark.sql import DataFrame
 
-from pyspark_check._constraints._Constraint import _Constraint
+from checkengine._constraints._Constraint import _Constraint
 
 
 class _TextLength(_Constraint):

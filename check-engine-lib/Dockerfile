@@ -52,7 +52,7 @@ RUN mkdir -p /opt/spark \
     && tar xf spark.tgz
 
 WORKDIR /app
-COPY pyspark_check ./pyspark_check
+COPY checkengine ./checkengine
 COPY ./tests ./tests
 COPY ./pyproject.toml poetry.lock ./
 COPY ./conftest.py ./
@@ -62,4 +62,4 @@ RUN poetry install
 
 ENV SPARK_HOME=/opt/spark/spark-3.0.1-bin-hadoop2.7
 
-CMD poetry run pytest -s --cov=pyspark_check --cov-branch --cov-fail-under=80 tests/
+CMD poetry run pytest -s --cov=checkengine --cov-branch --cov-fail-under=80 tests/

@@ -4,7 +4,7 @@ This file contains the tests that verify whether the library works correctly whe
 
 import pytest
 
-from pyspark_check.validate_df import ValidateSparkDataFrame, ValidationError
+from checkengine.validate_df import ValidateSparkDataFrame, ValidationError
 from tests.spark import two_integer_columns_schema
 from tests.spark.assert_df import AssertDf
 

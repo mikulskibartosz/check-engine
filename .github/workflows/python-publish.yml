@@ -18,10 +18,10 @@ jobs:
       with:
         python_version: 3.8.0
         poetry_version: 1.0
-        working_directory: ./pyspark-check-lib
+        working_directory: ./check-engine-lib
         args: build
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.pypi_token }}
-        packages_dir: ./pyspark-check-lib/dist
+        packages_dir: ./check-engine-lib/dist

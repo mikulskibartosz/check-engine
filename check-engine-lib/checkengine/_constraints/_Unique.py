@@ -1,6 +1,6 @@
 from pyspark.sql import DataFrame
 
-from pyspark_check._constraints._Constraint import _Constraint
+from checkengine._constraints._Constraint import _Constraint
 
 
 class _Unique(_Constraint):
