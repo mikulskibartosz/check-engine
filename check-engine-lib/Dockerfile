@@ -48,7 +48,7 @@ ENV PATH ${PATH}:${JAVA_HOME}/bin
 
 RUN mkdir -p /opt/spark \
     && cd /opt/spark \
-    && curl https://www.apache.org/dyn/closer.lua/spark/spark-3.0.3/spark-3.0.3-bin-hadoop2.7.tgz -o spark.tgz \
+    && curl https://mirrors.hostingromania.ro/apache.org/spark/spark-3.0.3/spark-3.0.3-bin-hadoop2.7.tgz -o spark.tgz \
     && tar xf spark.tgz
 
 WORKDIR /app
