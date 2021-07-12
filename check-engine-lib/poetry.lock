@@ -165,8 +165,8 @@ category = "main"
 description = "Apache Spark Python API"
 name = "pyspark"
 optional = false
-python-versions = ">=3.6"
-version = "3.1.2"
+python-versions = "*"
+version = "3.0.3"
 
 [package.dependencies]
 py4j = "0.10.9"
@@ -174,7 +174,7 @@ py4j = "0.10.9"
 [package.extras]
 ml = ["numpy (>=1.7)"]
 mllib = ["numpy (>=1.7)"]
-sql = ["pandas (>=0.23.2)", "pyarrow (>=1.0.0)"]
+sql = ["pandas (>=0.23.2)", "pyarrow (>=0.15.1)"]
 
 [[package]]
 category = "dev"
@@ -258,7 +258,7 @@ python-versions = "*"
 version = "0.2.5"
 
 [metadata]
-content-hash = "a880e6a9263821062c4079e2efd65e7445826e449fd71e4ed8b7cce46f17ca22"
+content-hash = "0501f68fcc1c687a561a82f33a1e6fe871ce8dad067ccba85a1f963a69d46138"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -402,7 +402,7 @@ pyparsing = [
     {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
 ]
 pyspark = [
-    {file = "pyspark-3.1.2.tar.gz", hash = "sha256:5e25ebb18756e9715f4d26848cc7e558035025da74b4fc325a0ebc05ff538e65"},
+    {file = "pyspark-3.0.3.tar.gz", hash = "sha256:c4499903e3d7289cf2b4bf7755fb32cf17922598f3b85a1c230860dec020eec4"},
 ]
 pytest = [
     {file = "pytest-5.4.3-py3-none-any.whl", hash = "sha256:5c0db86b698e8f170ba4582a492248919255fcd4c79b1ee64ace34301fb589a1"},
