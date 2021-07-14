@@ -4,7 +4,9 @@ The goal of this project is to implement a data validation library for PySpark. 
 
 ## How to install
 
-THERE IS NO PACKAGE YET!!!
+```
+pip install checkengine==0.2.0
+```
 
 ## How to use
 
